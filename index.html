@@ -167,324 +167,6 @@
         
 
 <div class="post">
-    <a href="/2024/08/21/at&t%E6%B1%87%E7%BC%96/">
-        <h2 class="post-title">test</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2024/8/21
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <p>X86</p>
-<p>在已经学习过inter汇编相关知识的情况下，学习at&amp;t语法并不困难，毕竟最困难的部分已经过去了。</p>
-<p><code>为什么会有两种语法的x86的汇编语言？</code></p>
-<p>汇编语言这个东西本身就和芯片架构高度绑定，其本身就是机器码的助记符，而x86架构的芯片原本就是intel研制的。</p>
-<p>所以这个问题可以转化为，<code>为什么at&amp;t要在已有intel语法的基础上再设计一套新语法？</code></p>
-<p>c语言是大名鼎鼎的贝尔实验室发明的，还有UNIX OS，而贝尔实验室属于AT&amp;T，从四五十年前到现在，跑UNIX的服务器很大一部分使用的是非intel x86 CPU,人家好像也根本就不怎么鸟intel编译器。</p>
-<p>直到PC的普及。</p>
-<p>然后免费的linux出现了，使个人电脑可以使用类UNIX操作系统。虽说比不上windows，但还是有一部分市场。而linux等类UNIX的官方语言就是C语言。这个时候，AT&amp;T就要考虑如何在x86上把C语言编译成能执行的机器码。</p>
-<p>至于at&amp;t为什么没有直接采用intel的语法，倒是有些许说法，有的说使intel申请了专利balabala，也有说at&amp;t还是看不上intel的语法，打算新写一种更通用的语法(以后可以应用在别的芯片上)，还可能以上影响都有。</p>
-<p>那么，具体的区别呢？</p>
-<h2 id="操作数前后缀"><a href="#操作数前后缀" class="headerlink" title="操作数前后缀"></a>操作数前后缀</h2><p>在intel的语法中，寄存器和立即数都没有前缀，但在AT&amp;T中，寄存器前冠以“%”，而立即数前冠以“$”。在intel语法中，十六进制和二进制立即数的后缀分别冠以“h”和“b”，而在AT&amp;T中，十六进制前冠以“0x”</p>
-<p>Intel与AT&amp;T前缀的区别</p>
-<table>
-<thead>
-<tr>
-<th align="left">Intel语法</th>
-<th align="left">AT&amp;T语法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">mov   eax,8</td>
-<td align="left">movl  $8,%eax</td>
-</tr>
-<tr>
-<td align="left">mov   ebx,0ffffh</td>
-<td align="left">movl  $0xffff,%ebx</td>
-</tr>
-<tr>
-<td align="left">int 80h</td>
-<td align="left">int   $0x80</td>
-</tr>
-</tbody></table>
-<h2 id="操作数的方向"><a href="#操作数的方向" class="headerlink" title="操作数的方向"></a>操作数的方向</h2><p>intel与AT&amp;T操作数的方向正好相反。在intel语法中，第一个操作数是<code>目的操作数</code>，第二个操作数<code>源操作数</code>。而在AT&amp;T中，第一个操作数是源操作数，第二个是目的操作数。由此可以看出，AT&amp;T的语法更符合人们通常的阅读习惯。</p>
-<p>例如：</p>
-<table>
-<thead>
-<tr>
-<th>Intel语法</th>
-<th>AT&amp;T语法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>mov  eax,[ecx]</td>
-<td>movl (%ecx),%eax</td>
-</tr>
-</tbody></table>
-<h2 id="内存单元操作数"><a href="#内存单元操作数" class="headerlink" title="内存单元操作数"></a>内存单元操作数</h2><p>从上面的例子可以看出，内存的操作数也有所不同。在intel的语法中，基寄存器用<code>[]</code>括起来，而AT&amp;T中用<code>()</code>括起来。</p>
-<p>例如：</p>
-<table>
-<thead>
-<tr>
-<th>Intel语法</th>
-<th>AT&amp;T语法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>mov  eax,[ebx+5]</td>
-<td>movl   5(%ebx),%eax</td>
-</tr>
-</tbody></table>
-<h2 id="间接寻址"><a href="#间接寻址" class="headerlink" title="间接寻址"></a>间接寻址</h2><p>与intel的语法比较，AT&amp;T间接寻址方式可能更晦涩难懂一些intel的指令格格式是</p>
-<p>segreg：[base+index*scale+disp]</p>
-<p>而AT&amp;T的格式是</p>
-<p>%segreg：disp(base,index,scale)</p>
-<p>其中index&#x2F;scale&#x2F;disp&#x2F;segreg是可选的，完全可以简化掉，如果没有指定scale而制定了index，则scale的缺省值为1.segreg段寄存器依赖于指令以及应用程序是运行在实模式还是保护模式，在实模式下，它依赖于指令，而在保护模式下segreg是多余的。在AT&amp;T中，当立即数在scale&#x2F;disp中不应在其前冠以“$”前缀</p>
-<p>内存操作数的语法及举例</p>
-<table>
-<thead>
-<tr>
-<th align="left">Intel语法</th>
-<th align="left">AT&amp;T语法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">指令   foo,segreg:[base+index*scale+disp]</td>
-<td align="left">指令    %segreg:disp(base,index,scale),foo</td>
-</tr>
-<tr>
-<td align="left">mov  eax,[ebx+20h]</td>
-<td align="left">Movl   0x20(%ebx),%eax</td>
-</tr>
-<tr>
-<td align="left">add   eax,[ebx+ecx*2h</td>
-<td align="left">Addl   (%ebx,%ecx,0x2),%eax</td>
-</tr>
-<tr>
-<td align="left">lea   eax,[ebx+ecx]</td>
-<td align="left">Leal   (%ebx,%ecx),%eax</td>
-</tr>
-<tr>
-<td align="left">sub   eax,[ebx+ecx*4h-20h]</td>
-<td align="left">Subl   -0x20(%ebx,%ecx,0x4),%eax</td>
-</tr>
-</tbody></table>
-<p>这个方面，AT&amp;T可能不如intel，[base+index*scale+disp]一眼就可以看出其含义，而disp(base,index,scale)还需要一个简单的计算.</p>
-<p>这种寻址方式常常用在访问数据结构数组中某一特定元素的一个字段，其中，base为数组的起始数组，scale为每个数组的大小，index为下标。如果数组元素还是一个结构，则disp为具体字段在结构中的偏移。</p>
-<h2 id="操作码的前后缀"><a href="#操作码的前后缀" class="headerlink" title="操作码的前后缀"></a>操作码的前后缀</h2><p>在上面的例子中你可能已经注意到，在AT&amp;T的操作码后面有一个后缀，其含义就是指出操作码的大小。“l”表示长整数(32位)，“w”表示字（16位），“b”标示字节(8位)。而在Intel语法中，则要内存单元操作数的前面加上byte ptr，word ptr和dword ptr。“dword”即“double word”双字。</p>
-<p>也就是说，intel语法把字长声明在<code>操作数</code>，AT&amp;T语法把字长声明在<code>操作数</code></p>
-<p>操作码的后缀举例</p>
-<table>
-<thead>
-<tr>
-<th align="left">Intel语法</th>
-<th align="left">AT&amp;T语法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Mov   al,bl</td>
-<td align="left">movb  %bl,%al</td>
-</tr>
-<tr>
-<td align="left">Mov   ax,bx</td>
-<td align="left">movw  %bx,%ax</td>
-</tr>
-<tr>
-<td align="left">Mov   eax,ebx</td>
-<td align="left">movl   %ebx,%eax</td>
-</tr>
-<tr>
-<td align="left">Mov   eax, dword ptr [ebx]</td>
-<td align="left">movl   (%ebx),%eax</td>
-</tr>
-</tbody></table>
-<h2 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h2><p>顺便简单实现一下汇编语言的hello world。在linux中，有很多办法可以实现在屏幕上显示一个字符串，但最简洁的方式是使用linux内核提供的系统调用。使用这种方法最大的好处是可以直接和操作系统的内核进行通信，不需要链接诸如libc这样的函数库，也不需要使用elf解释器，所以代码尺寸小且执行速度快。</p>
-<p>linux是一个运行在兼容32位保护模式的操作系统，采用flat memory模式，<code>.data</code>是可读可写的数据区。而<code>.bss</code>则是可读可写且没有初始化的数据区。代码区和数据区在elf中统称为section。根据实际情况你可以使用其他的标准section，也可以添加自定义的section。但是一个elf可执行文件至少应该有一个<code>.text</code>部分</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#hello.s</span><br><span class="line">.data                                        # 数据段声明</span><br><span class="line">                msg : .string &quot;Hello, world!\\n&quot; # 要输出的字符串</span><br><span class="line">                len = . - msg                                     # 字串长度</span><br><span class="line">.text                                        # 代码段声明</span><br><span class="line">.global _start                     # 指定入口函数</span><br><span class="line">_start:                                    # 在屏幕上显示一个字符串</span><br><span class="line">                movl $len, %edx    # 参数三：字符串长度</span><br><span class="line">                movl $msg, %ecx    # 参数二：要显示的字符串</span><br><span class="line">                movl $1, %ebx        # 参数一：文件描述符(stdout)</span><br><span class="line">                movl $4, %eax        # 系统调用号(sys_write)</span><br><span class="line">                int    $0x80             # 调用内核功能</span><br><span class="line">                                                 # 退出程序</span><br><span class="line">                movl $0,%ebx         # 参数一：退出代码</span><br><span class="line">                movl $1,%eax         # 系统调用号(sys_exit)</span><br><span class="line">                int    $0x80             # 调用内核功能</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">; hello.asm</span><br><span class="line">section .data                        ; 数据段声明</span><br><span class="line">                msg db &quot;Hello, world!&quot;, 0xA         ; 要输出的字符串</span><br><span class="line">                len equ $ - msg                                 ; 字串长度</span><br><span class="line">section .text                        ; 代码段声明</span><br><span class="line">global _start                        ; 指定入口函数</span><br><span class="line">_start:                                    ; 在屏幕上显示一个字符串</span><br><span class="line">                mov edx, len         ; 参数三：字符串长度</span><br><span class="line">                mov ecx, msg         ; 参数二：要显示的字符串</span><br><span class="line">                mov ebx, 1             ; 参数一：文件描述符(stdout)</span><br><span class="line">                mov eax, 4             ; 系统调用号(sys_write)</span><br><span class="line">                int 0x80                 ; 调用内核功能</span><br><span class="line">                                                 ; 退出程序</span><br><span class="line">                mov ebx, 0             ; 参数一：退出代码</span><br><span class="line">                mov eax, 1             ; 系统调用号(sys_exit)</span><br><span class="line">                int 0x80                 ; 调用内核功能</span><br></pre></td></tr></table></figure>
-
-<p>以上两个代码虽然采用的语法不一样，但功能却都是调用linux内核提供的sys_write来显示一个字符串，然后再调用sys_exit退出程序。</p>
-<p>在linux内核源文件include&#x2F;asm-i386&#x2F;unistd.h中可以找到所有系统调用的定义。</p>
-<p>简单说一下系统调用</p>
-<p>即使是最简单的汇编程序，也难免用到诸如输入输出及退出的操作，而要进行这些操作需要调用操作系统所提供的服务，也就是系统调用。出非你的程序只是完成加减乘除等数学运算(不考虑程序开始或结束，不需要外部输入输出)，否则讲很难避免使用系统调用，事实上除了系统调用不同之外，各种操作系统的汇编编程往往都是类似的。</p>
-<p>在linux上只有两种方式使用系统调用：利用封装后的C库(libc)或则直接使用汇编直接调用。</p>
-<p>其中，直接通过汇编语言来调用系统调用，似乎最高效使用llinux内核的方法，因为最终生成的程序不需要任何库进行链接，而是直接和内核通信</p>
-<p>和DOS一样，linux下的系统调用也是很通过中断(int 0x80)来实现的。在执行int 80指令时，寄存器eax中存放的时候系统调用的功能号。而传给系统调用的参数依据32位和64位的不同分别将参数用栈传参和寄存器传参(前6个用 rdi, rsi, rdx, rcx, r8, r9，其余的使用栈传参)。系统调用完成后，返回值可以在寄存器eax中获得。</p>
-<p>所有系统调用功能号都可以在&#x2F;usr&#x2F;include&#x2F;bits&#x2F;syscall.h中找到，为了方便，他们是使用SYS_&lt;name&gt;这样的宏来定义的，如SYS_write,SYS_exit等。例如，经常用到的write函数时如下定义的：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssize_t write(int fd,const void *buf,size_t count);</span><br></pre></td></tr></table></figure>
-
-<p>该函数的功能最终时通过SYS_write这以系统调用实现的。依据上面的约定，参数fd，buf，count分别存在rdi，rsi，rdx，而系统调用号SYS_write则放在寄存器eax中，当int 0x80指令执行完毕，返回值可以从eax中获得。</p>
-<p>命令行参数</p>
-<p>在linux操作系统中，当一个可执行程序通过命令行启动时，其所需要的参数将被保存到栈中：首先是argc，然后时只想哥哥命令行参数的指针数组argv，最后是指向环境的指针数据envp。在编写汇编语言程序时，很多时候需要对这些参数进行处理</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># args.s</span><br><span class="line">.text</span><br><span class="line">.globl _start</span><br><span class="line">_start:</span><br><span class="line">popl %ecx # argc</span><br><span class="line">vnext:</span><br><span class="line">popl %ecx # argv</span><br><span class="line">test %ecx, %ecx # 空指针表明结束</span><br><span class="line">jz exit</span><br><span class="line">movl %ecx, %ebx</span><br><span class="line">xorl %edx, %edx</span><br><span class="line">strlen:</span><br><span class="line">movb (%ebx), %al</span><br><span class="line">inc %edx</span><br><span class="line">inc %ebx</span><br><span class="line">test %al, %al</span><br><span class="line">jnz strlen</span><br><span class="line">movb $10, -1(%ebx)</span><br><span class="line">movl $4, %eax # 系统调用号(sys_write)</span><br><span class="line">movl $1, %ebx # 文件描述符(stdout)</span><br><span class="line">int $0x80</span><br><span class="line">jmp vnext</span><br><span class="line">exit: movl $1,%eax # 系统调用号(sys_exit)</span><br><span class="line">xorl %ebx, %ebx # 退出代码</span><br><span class="line">int $0x80</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
-
-<p>gcc内联汇编</p>
-<p>用汇编编写的程序虽然运行速度快，但是开发速度慢，效率也低。如果只是对关键代码进行有优化，或许更好的办法是将汇编指令嵌入到C语言的程序中，从而充分利用高级语言和汇编语言各自的特点。但一般来讲，在C代码中嵌入汇编代码语句要比“存粹”的汇编代码复杂得多，应为需要解决“在尽量不影响已分配寄存器的情况，继续分配寄存器”，以及如何和与C代码中变量相结合等问题。</p>
-<p>GCC提供了很好的内联汇编支持，最基本的格式是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_asm__(&quot;asm statements&quot;);</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__asm__(&quot;nop&quot;);这个语句不自行任何操作</span><br></pre></td></tr></table></figure>
-
-<p>如果需要执行多条汇编语句的，则应该用“\n\t”将各个语句分隔开，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__asm__( &quot;pushl %%eax \\n\\t&quot;</span><br><span class="line">&quot;movl $0, %%eax \\n\\t&quot;</span><br><span class="line">&quot;popl %eax&quot;);</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__asm__( &quot;pushl %%eax \\n\\t&quot;</span><br><span class="line">&quot;movl $0, %%eax \\n\\t&quot;</span><br><span class="line">&quot;popl %eax&quot;);</span><br></pre></td></tr></table></figure>
-
-<p>通常嵌入到C代码中的汇编代码很难做到与其他部分没有任何关系，因此更多时候需要用到完整的内联汇编格式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__asm__(&quot;asm statements&quot; : outputs : inputs : registers-modified);</span><br></pre></td></tr></table></figure>
-
-<p>插入到C代码中的汇编代码是以”:”分割的四个布冯，其中一部分就是汇编代码身，通常被称为之后指令部，其格式和在汇编语言中使用的格式基本相同。指令部分是必须的，而其他部分这则可以根据实际情况进行省略。</p>
-<p>在将汇编语句嵌入到C代码中时，操作数如何与C代码中的变量相结合是一个很大的问题。</p>
-<p>GCC采用如下办法来解决这个问题：</p>
-<p>程序员提供具体的指令，而对寄存器的使用则只需给出”样板”和约束条件就可以了，具体怎样将寄存器和变量解饿起来就是GCC等编译器的事了</p>
-<p>在GCC内联汇编语句的指令中，加上前缀”%”的数字(如%0，%1)表示的就是需要时使用寄存器的”样板”操作数。指令部中使用了几个样板操作数，就表明有几个变量需要和寄存器相结合，这样GCC等编译器在编译时会根据后面给定的约束条件进行恰当的处理，由于样板操作数也是用”%”作为前缀，因此在设计到具体的寄存器时，寄存器前面应该加上两个”%”，一面产生混淆。</p>
-<p>紧跟在指令后部的是输出部，是规定输出变量如何与样板操作数进行结合的条件，每一个条件称为一个”约束”，必要时可以打包多个约束，相互之间用逗号分隔开就可以了。每个输出约束都是以”&#x3D;”号开始的，然后紧跟一个操作数类型进行说明的字后，最后是如何与变量相结合的约束。凡是与输出部中说明的操作数相结合的寄存器或操作数本身，在执行完嵌入的汇编代码后均不保留执行之前的内容，只是GCC在调度寄存器时所使用的依据。</p>
-<p>输出部后面时输入部，输入约束的格式和输出约束相似，但不带”&#x3D;”号，如果一个输入约束要求使用寄存器，则GCC在预处理时就会为之分配一个寄存器，并插入必要的指令将操作数装入该寄存器。与输入部中说明的操作数结婚的寄存器或操作数本身，在执行完嵌入的汇编代码后也不保留执行之前的内容。</p>
-<p>有时在执行某些操作时，除了要用到进行数据输入和输出的寄存器外，还要使用多个寄存器来保存中间计算结果，这样就难免会破坏原有寄存器的内容。在GCC内联汇编合适的最后一个部分中，可以对产生副作用的寄存器进行说明，一边GCC能采用相应的措施。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">int a = 10, b = 0;</span><br><span class="line">__asm__ __volatile__(&quot;movl %1, %%eax;\\n\\r&quot;</span><br><span class="line">&quot;movl %%eax, %0;&quot;</span><br><span class="line">:&quot;=r&quot;(b)</span><br><span class="line">:&quot;r&quot;(a)</span><br><span class="line">:&quot;%eax&quot;);</span><br><span class="line">printf(&quot;Result: %d, %d\\n&quot;, a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>上面的程序完成变量a的值赋予变量b，有几点需要说明：</p>
-<ul>
-<li>变量b是输出的操作数，通过%0来应用，而变量a是输入操作数，通过%1来引用。</li>
-<li>输入操作数和输出操作数都是用r进行约束，表示变量a和变量b储存在寄存器中。输入约束和输出约束的不同点在于输出约束多一个约束修饰符”&#x3D;”</li>
-<li>在内联汇编语句中使用寄存器eax时，寄存器名前应加两个”%”，即两个”%%eax”.内联汇编使用%0，%1等标示变量，任何只带一个”%”的表示符都看成是操作数，而不是寄存器。</li>
-<li>内联汇编的最后一个部分告诉GCC，他将改变寄存器eax的值，GCC编译器在处理时不应该使用该寄存器来储存其他任何值。</li>
-<li>由于变量b被指定成输出操作数，当内联汇编语句执行完毕后，她所保存的值将被更新。</li>
-</ul>
-<p>在内联汇编中用到的操作数，从输出部的第一个约束开始编号，序号从0开始，每一个约束计数一次，指令需要引用这些操作数，只需在序号前加上”%”作为前缀就可以了，需要注意的是，内敛汇编的指令部在引用第一个操作数时总将其作为32位的长字使用，但实际情况需要的是字或是字节，因此应该在约束中指明正确的限定符：</p>
-<table>
-<thead>
-<tr>
-<th><strong>限定符</strong></th>
-<th><strong>意义</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>“m”、”v”、”o”</td>
-<td>内存单元</td>
-</tr>
-<tr>
-<td>“r”</td>
-<td>任何寄存器</td>
-</tr>
-<tr>
-<td>“q”</td>
-<td>寄存器eax、ebx、ecx、edx之一</td>
-</tr>
-<tr>
-<td>“i”、”h”</td>
-<td>直接操作数</td>
-</tr>
-<tr>
-<td>“E”和”F”</td>
-<td>浮点数</td>
-</tr>
-<tr>
-<td>“g”</td>
-<td>任意</td>
-</tr>
-<tr>
-<td>“a”、”b”、”c”、”d”</td>
-<td>分别表示寄存器eax、ebx、ecx和edx</td>
-</tr>
-<tr>
-<td>“S”和”D”</td>
-<td>寄存器esi、edi</td>
-</tr>
-<tr>
-<td>“I”</td>
-<td>常数（0至31）</td>
-</tr>
-</tbody></table>
-<p>顺便提一下，内联汇编也可以将汇编单独写在一个源文件里，然后extern调用，个人感觉这样可能方便些。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;nasm -f elf test.asm   compile si as i386 default</span><br><span class="line">;nasm -f elf64 test.asm</span><br><span class="line">;ld -m elf_i386 -o test test.o  </span><br><span class="line">;ld  -m elf_x86_64 -o test test.o</span><br><span class="line">;这里单独编译也能运行,这里是intel的语法，at&amp;t也还是一样的。</span><br><span class="line">;ld -o test test.o </span><br><span class="line"></span><br><span class="line">section .data                  ;</span><br><span class="line">msg db &quot;hello, world&quot;,0xa      ; </span><br><span class="line">len equ $ - msg                ;</span><br><span class="line">section .text                  ;</span><br><span class="line"></span><br><span class="line">global hello_world              ;</span><br><span class="line">                               ;</span><br><span class="line">hello_world:                        ;</span><br><span class="line">    mov edx,len;write(1,str,len)</span><br><span class="line">    mov ecx,msg;</span><br><span class="line">    mov ebx,1;</span><br><span class="line">    mov eax,4;</span><br><span class="line">    int 0x80;</span><br><span class="line">    mov ebx,0;</span><br><span class="line">    mov eax,1;</span><br><span class="line">    int 0x80;</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// nasm -f elf64 hello_world.asm</span></span><br><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="comment">// gcc -c test.c -o test.o</span></span><br><span class="line"><span class="comment">// ld test.o srop.o -o test</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;linux/prctl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="title function_">hello_world</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    hello_world();   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1804189">https://cloud.tencent.com/developer/article/1804189</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/liaoshengshi/article/details/39989797">https://blog.csdn.net/liaoshengshi/article/details/39989797</a></p>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        
-        
-    </div>
-    <a href="/2024/08/21/at&t%E6%B1%87%E7%BC%96/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
-    <a href="/2024/03/22/linux%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
-        <h2 class="post-title"></h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2024/3/22
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <hr>
-<h2 id="title-linux网络编程date-2022-09-19-18-44-06tags"><a href="#title-linux网络编程date-2022-09-19-18-44-06tags" class="headerlink" title="title: linux网络编程date: 2022-09-19 18:44:06tags:"></a>title: linux网络编程<br>date: 2022-09-19 18:44:06<br>tags:</h2><p>client</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PORT 28000</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_BUFFER_SIZE 1024</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> client_socket;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">server_addr</span>;</span></span><br><span class="line">    <span class="type">char</span> buffer[MAX_BUFFER_SIZE];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建客户端套接字</span></span><br><span class="line">    client_socket = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (client_socket == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Error creating socket&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置服务器地址结构</span></span><br><span class="line">    server_addr.sin_family = AF_INET;</span><br><span class="line">    server_addr.sin_addr.s_addr = inet_addr(<span class="string">&quot;150.158.21.50&quot;</span>);</span><br><span class="line">    server_addr.sin_port = htons(PORT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 尝试连接到服务器</span></span><br><span class="line">    <span class="keyword">if</span> (connect(client_socket, (<span class="keyword">struct</span> sockaddr*)&amp;server_addr, <span class="keyword">sizeof</span>(server_addr)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Error connecting to server&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Connected to server\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 发送和接收数据</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 输入消息</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Enter message: &quot;</span>);</span><br><span class="line">        fgets(buffer, <span class="keyword">sizeof</span>(buffer), <span class="built_in">stdin</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 发送数据</span></span><br><span class="line">        <span class="type">ssize_t</span> bytes_sent = send(client_socket, buffer, <span class="built_in">strlen</span>(buffer), <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (bytes_sent == <span class="number">-1</span>) &#123;</span><br><span class="line">            perror(<span class="string">&quot;Error sending data&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 接收数据</span></span><br><span class="line">        <span class="type">ssize_t</span> bytes_received = recv(client_socket, buffer, <span class="keyword">sizeof</span>(buffer), <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (bytes_received &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            perror(<span class="string">&quot;Error receiving data&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 在接收到的数据后添加字符串结束符</span></span><br><span class="line">        buffer[bytes_received] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Server response: %s&quot;</span>, buffer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 关闭套接字</span></span><br><span class="line">    close(client_socket);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>server</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PORT 28000</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE 1024</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> server_socket, client_socket;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">server_address</span>, <span class="title">client_address</span>;</span></span><br><span class="line">    <span class="type">char</span> buffer[BUFFER_SIZE] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 创建服务器套接字</span></span><br><span class="line">    <span class="keyword">if</span> ((server_socket = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Socket creation failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置服务器地址结构</span></span><br><span class="line">    server_address.sin_family = AF_INET;</span><br><span class="line">    server_address.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line">    server_address.sin_port = htons(PORT);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将服务器套接字绑定到指定地址和端口</span></span><br><span class="line">    <span class="keyword">if</span> (bind(server_socket, (<span class="keyword">struct</span> sockaddr *)&amp;server_address, <span class="keyword">sizeof</span>(server_address)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Bind failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 监听连接请求</span></span><br><span class="line">    <span class="keyword">if</span> (listen(server_socket, <span class="number">3</span>) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Listen failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Server listening on port %d...\n&quot;</span>, PORT);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 接受连接</span></span><br><span class="line">    <span class="keyword">if</span> ((client_socket = accept(server_socket, (<span class="keyword">struct</span> sockaddr *)&amp;client_address, (<span class="type">socklen_t</span>*)&amp;client_address)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Accept failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 从客户端接收消息并发送回复</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(buffer, <span class="number">0</span>, <span class="keyword">sizeof</span>(buffer));</span><br><span class="line">        <span class="keyword">if</span> (read(client_socket, buffer, <span class="keyword">sizeof</span>(buffer)) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Client disconnected\n&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Received message from client: %s&quot;</span>, buffer);</span><br><span class="line">        write(client_socket, buffer, <span class="built_in">strlen</span>(buffer));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 关闭套接字</span></span><br><span class="line">    close(server_socket);</span><br><span class="line">    close(client_socket);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>将server部署到云服务器时，需在防火墙和策略组开放相应端口，端口的选择也应当注意，不要冲突。</p>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        
-        
-    </div>
-    <a href="/2024/03/22/linux%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
     <a href="/2024/03/22/C%E4%BF%A1%E5%8F%B7/">
         <h2 class="post-title"></h2>
     </a>
@@ -1076,6 +758,280 @@
         
     </div>
     <a href="/2024/01/15/OS/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2023/08/21/at&t%E6%B1%87%E7%BC%96/">
+        <h2 class="post-title">x86汇编</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/8/21
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>X86</p>
+<p>在已经学习过inter汇编相关知识的情况下，学习at&amp;t语法并不困难，毕竟最困难的部分已经过去了。</p>
+<p><code>为什么会有两种语法的x86的汇编语言？</code></p>
+<p>汇编语言这个东西本身就和芯片架构高度绑定，其本身就是机器码的助记符，而x86架构的芯片原本就是intel研制的。</p>
+<p>所以这个问题可以转化为，<code>为什么at&amp;t要在已有intel语法的基础上再设计一套新语法？</code></p>
+<p>c语言是大名鼎鼎的贝尔实验室发明的，还有UNIX OS，而贝尔实验室属于AT&amp;T，从四五十年前到现在，跑UNIX的服务器很大一部分使用的是非intel x86 CPU,人家好像也根本就不怎么鸟intel编译器。</p>
+<p>直到PC的普及。</p>
+<p>然后免费的linux出现了，使个人电脑可以使用类UNIX操作系统。虽说比不上windows，但还是有一部分市场。而linux等类UNIX的官方语言就是C语言。这个时候，AT&amp;T就要考虑如何在x86上把C语言编译成能执行的机器码。</p>
+<p>至于at&amp;t为什么没有直接采用intel的语法，倒是有些许说法，有的说使intel申请了专利balabala，也有说at&amp;t还是看不上intel的语法，打算新写一种更通用的语法(以后可以应用在别的芯片上)，还可能以上影响都有。</p>
+<p>那么，具体的区别呢？</p>
+<h2 id="操作数前后缀"><a href="#操作数前后缀" class="headerlink" title="操作数前后缀"></a>操作数前后缀</h2><p>在intel的语法中，寄存器和立即数都没有前缀，但在AT&amp;T中，寄存器前冠以“%”，而立即数前冠以“$”。在intel语法中，十六进制和二进制立即数的后缀分别冠以“h”和“b”，而在AT&amp;T中，十六进制前冠以“0x”</p>
+<p>Intel与AT&amp;T前缀的区别</p>
+<table>
+<thead>
+<tr>
+<th align="left">Intel语法</th>
+<th align="left">AT&amp;T语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">mov   eax,8</td>
+<td align="left">movl  $8,%eax</td>
+</tr>
+<tr>
+<td align="left">mov   ebx,0ffffh</td>
+<td align="left">movl  $0xffff,%ebx</td>
+</tr>
+<tr>
+<td align="left">int 80h</td>
+<td align="left">int   $0x80</td>
+</tr>
+</tbody></table>
+<h2 id="操作数的方向"><a href="#操作数的方向" class="headerlink" title="操作数的方向"></a>操作数的方向</h2><p>intel与AT&amp;T操作数的方向正好相反。在intel语法中，第一个操作数是<code>目的操作数</code>，第二个操作数<code>源操作数</code>。而在AT&amp;T中，第一个操作数是源操作数，第二个是目的操作数。由此可以看出，AT&amp;T的语法更符合人们通常的阅读习惯。</p>
+<p>例如：</p>
+<table>
+<thead>
+<tr>
+<th>Intel语法</th>
+<th>AT&amp;T语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mov  eax,[ecx]</td>
+<td>movl (%ecx),%eax</td>
+</tr>
+</tbody></table>
+<h2 id="内存单元操作数"><a href="#内存单元操作数" class="headerlink" title="内存单元操作数"></a>内存单元操作数</h2><p>从上面的例子可以看出，内存的操作数也有所不同。在intel的语法中，基寄存器用<code>[]</code>括起来，而AT&amp;T中用<code>()</code>括起来。</p>
+<p>例如：</p>
+<table>
+<thead>
+<tr>
+<th>Intel语法</th>
+<th>AT&amp;T语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mov  eax,[ebx+5]</td>
+<td>movl   5(%ebx),%eax</td>
+</tr>
+</tbody></table>
+<h2 id="间接寻址"><a href="#间接寻址" class="headerlink" title="间接寻址"></a>间接寻址</h2><p>与intel的语法比较，AT&amp;T间接寻址方式可能更晦涩难懂一些intel的指令格格式是</p>
+<p>segreg：[base+index*scale+disp]</p>
+<p>而AT&amp;T的格式是</p>
+<p>%segreg：disp(base,index,scale)</p>
+<p>其中index&#x2F;scale&#x2F;disp&#x2F;segreg是可选的，完全可以简化掉，如果没有指定scale而制定了index，则scale的缺省值为1.segreg段寄存器依赖于指令以及应用程序是运行在实模式还是保护模式，在实模式下，它依赖于指令，而在保护模式下segreg是多余的。在AT&amp;T中，当立即数在scale&#x2F;disp中不应在其前冠以“$”前缀</p>
+<p>内存操作数的语法及举例</p>
+<table>
+<thead>
+<tr>
+<th align="left">Intel语法</th>
+<th align="left">AT&amp;T语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">指令   foo,segreg:[base+index*scale+disp]</td>
+<td align="left">指令    %segreg:disp(base,index,scale),foo</td>
+</tr>
+<tr>
+<td align="left">mov  eax,[ebx+20h]</td>
+<td align="left">Movl   0x20(%ebx),%eax</td>
+</tr>
+<tr>
+<td align="left">add   eax,[ebx+ecx*2h</td>
+<td align="left">Addl   (%ebx,%ecx,0x2),%eax</td>
+</tr>
+<tr>
+<td align="left">lea   eax,[ebx+ecx]</td>
+<td align="left">Leal   (%ebx,%ecx),%eax</td>
+</tr>
+<tr>
+<td align="left">sub   eax,[ebx+ecx*4h-20h]</td>
+<td align="left">Subl   -0x20(%ebx,%ecx,0x4),%eax</td>
+</tr>
+</tbody></table>
+<p>这个方面，AT&amp;T可能不如intel，[base+index*scale+disp]一眼就可以看出其含义，而disp(base,index,scale)还需要一个简单的计算.</p>
+<p>这种寻址方式常常用在访问数据结构数组中某一特定元素的一个字段，其中，base为数组的起始数组，scale为每个数组的大小，index为下标。如果数组元素还是一个结构，则disp为具体字段在结构中的偏移。</p>
+<h2 id="操作码的前后缀"><a href="#操作码的前后缀" class="headerlink" title="操作码的前后缀"></a>操作码的前后缀</h2><p>在上面的例子中你可能已经注意到，在AT&amp;T的操作码后面有一个后缀，其含义就是指出操作码的大小。“l”表示长整数(32位)，“w”表示字（16位），“b”标示字节(8位)。而在Intel语法中，则要内存单元操作数的前面加上byte ptr，word ptr和dword ptr。“dword”即“double word”双字。</p>
+<p>也就是说，intel语法把字长声明在<code>操作数</code>，AT&amp;T语法把字长声明在<code>操作数</code></p>
+<p>操作码的后缀举例</p>
+<table>
+<thead>
+<tr>
+<th align="left">Intel语法</th>
+<th align="left">AT&amp;T语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Mov   al,bl</td>
+<td align="left">movb  %bl,%al</td>
+</tr>
+<tr>
+<td align="left">Mov   ax,bx</td>
+<td align="left">movw  %bx,%ax</td>
+</tr>
+<tr>
+<td align="left">Mov   eax,ebx</td>
+<td align="left">movl   %ebx,%eax</td>
+</tr>
+<tr>
+<td align="left">Mov   eax, dword ptr [ebx]</td>
+<td align="left">movl   (%ebx),%eax</td>
+</tr>
+</tbody></table>
+<h2 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h2><p>顺便简单实现一下汇编语言的hello world。在linux中，有很多办法可以实现在屏幕上显示一个字符串，但最简洁的方式是使用linux内核提供的系统调用。使用这种方法最大的好处是可以直接和操作系统的内核进行通信，不需要链接诸如libc这样的函数库，也不需要使用elf解释器，所以代码尺寸小且执行速度快。</p>
+<p>linux是一个运行在兼容32位保护模式的操作系统，采用flat memory模式，<code>.data</code>是可读可写的数据区。而<code>.bss</code>则是可读可写且没有初始化的数据区。代码区和数据区在elf中统称为section。根据实际情况你可以使用其他的标准section，也可以添加自定义的section。但是一个elf可执行文件至少应该有一个<code>.text</code>部分</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#hello.s</span><br><span class="line">.data                                        # 数据段声明</span><br><span class="line">                msg : .string &quot;Hello, world!\\n&quot; # 要输出的字符串</span><br><span class="line">                len = . - msg                                     # 字串长度</span><br><span class="line">.text                                        # 代码段声明</span><br><span class="line">.global _start                     # 指定入口函数</span><br><span class="line">_start:                                    # 在屏幕上显示一个字符串</span><br><span class="line">                movl $len, %edx    # 参数三：字符串长度</span><br><span class="line">                movl $msg, %ecx    # 参数二：要显示的字符串</span><br><span class="line">                movl $1, %ebx        # 参数一：文件描述符(stdout)</span><br><span class="line">                movl $4, %eax        # 系统调用号(sys_write)</span><br><span class="line">                int    $0x80             # 调用内核功能</span><br><span class="line">                                                 # 退出程序</span><br><span class="line">                movl $0,%ebx         # 参数一：退出代码</span><br><span class="line">                movl $1,%eax         # 系统调用号(sys_exit)</span><br><span class="line">                int    $0x80             # 调用内核功能</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">; hello.asm</span><br><span class="line">section .data                        ; 数据段声明</span><br><span class="line">                msg db &quot;Hello, world!&quot;, 0xA         ; 要输出的字符串</span><br><span class="line">                len equ $ - msg                                 ; 字串长度</span><br><span class="line">section .text                        ; 代码段声明</span><br><span class="line">global _start                        ; 指定入口函数</span><br><span class="line">_start:                                    ; 在屏幕上显示一个字符串</span><br><span class="line">                mov edx, len         ; 参数三：字符串长度</span><br><span class="line">                mov ecx, msg         ; 参数二：要显示的字符串</span><br><span class="line">                mov ebx, 1             ; 参数一：文件描述符(stdout)</span><br><span class="line">                mov eax, 4             ; 系统调用号(sys_write)</span><br><span class="line">                int 0x80                 ; 调用内核功能</span><br><span class="line">                                                 ; 退出程序</span><br><span class="line">                mov ebx, 0             ; 参数一：退出代码</span><br><span class="line">                mov eax, 1             ; 系统调用号(sys_exit)</span><br><span class="line">                int 0x80                 ; 调用内核功能</span><br></pre></td></tr></table></figure>
+
+<p>以上两个代码虽然采用的语法不一样，但功能却都是调用linux内核提供的sys_write来显示一个字符串，然后再调用sys_exit退出程序。</p>
+<p>在linux内核源文件include&#x2F;asm-i386&#x2F;unistd.h中可以找到所有系统调用的定义。</p>
+<p>简单说一下系统调用</p>
+<p>即使是最简单的汇编程序，也难免用到诸如输入输出及退出的操作，而要进行这些操作需要调用操作系统所提供的服务，也就是系统调用。出非你的程序只是完成加减乘除等数学运算(不考虑程序开始或结束，不需要外部输入输出)，否则讲很难避免使用系统调用，事实上除了系统调用不同之外，各种操作系统的汇编编程往往都是类似的。</p>
+<p>在linux上只有两种方式使用系统调用：利用封装后的C库(libc)或则直接使用汇编直接调用。</p>
+<p>其中，直接通过汇编语言来调用系统调用，似乎最高效使用llinux内核的方法，因为最终生成的程序不需要任何库进行链接，而是直接和内核通信</p>
+<p>和DOS一样，linux下的系统调用也是很通过中断(int 0x80)来实现的。在执行int 80指令时，寄存器eax中存放的时候系统调用的功能号。而传给系统调用的参数依据32位和64位的不同分别将参数用栈传参和寄存器传参(前6个用 rdi, rsi, rdx, rcx, r8, r9，其余的使用栈传参)。系统调用完成后，返回值可以在寄存器eax中获得。</p>
+<p>所有系统调用功能号都可以在&#x2F;usr&#x2F;include&#x2F;bits&#x2F;syscall.h中找到，为了方便，他们是使用SYS_&lt;name&gt;这样的宏来定义的，如SYS_write,SYS_exit等。例如，经常用到的write函数时如下定义的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssize_t write(int fd,const void *buf,size_t count);</span><br></pre></td></tr></table></figure>
+
+<p>该函数的功能最终时通过SYS_write这以系统调用实现的。依据上面的约定，参数fd，buf，count分别存在rdi，rsi，rdx，而系统调用号SYS_write则放在寄存器eax中，当int 0x80指令执行完毕，返回值可以从eax中获得。</p>
+<p>命令行参数</p>
+<p>在linux操作系统中，当一个可执行程序通过命令行启动时，其所需要的参数将被保存到栈中：首先是argc，然后时只想哥哥命令行参数的指针数组argv，最后是指向环境的指针数据envp。在编写汇编语言程序时，很多时候需要对这些参数进行处理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># args.s</span><br><span class="line">.text</span><br><span class="line">.globl _start</span><br><span class="line">_start:</span><br><span class="line">popl %ecx # argc</span><br><span class="line">vnext:</span><br><span class="line">popl %ecx # argv</span><br><span class="line">test %ecx, %ecx # 空指针表明结束</span><br><span class="line">jz exit</span><br><span class="line">movl %ecx, %ebx</span><br><span class="line">xorl %edx, %edx</span><br><span class="line">strlen:</span><br><span class="line">movb (%ebx), %al</span><br><span class="line">inc %edx</span><br><span class="line">inc %ebx</span><br><span class="line">test %al, %al</span><br><span class="line">jnz strlen</span><br><span class="line">movb $10, -1(%ebx)</span><br><span class="line">movl $4, %eax # 系统调用号(sys_write)</span><br><span class="line">movl $1, %ebx # 文件描述符(stdout)</span><br><span class="line">int $0x80</span><br><span class="line">jmp vnext</span><br><span class="line">exit: movl $1,%eax # 系统调用号(sys_exit)</span><br><span class="line">xorl %ebx, %ebx # 退出代码</span><br><span class="line">int $0x80</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+
+<p>gcc内联汇编</p>
+<p>用汇编编写的程序虽然运行速度快，但是开发速度慢，效率也低。如果只是对关键代码进行有优化，或许更好的办法是将汇编指令嵌入到C语言的程序中，从而充分利用高级语言和汇编语言各自的特点。但一般来讲，在C代码中嵌入汇编代码语句要比“存粹”的汇编代码复杂得多，应为需要解决“在尽量不影响已分配寄存器的情况，继续分配寄存器”，以及如何和与C代码中变量相结合等问题。</p>
+<p>GCC提供了很好的内联汇编支持，最基本的格式是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_asm__(&quot;asm statements&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__asm__(&quot;nop&quot;);这个语句不自行任何操作</span><br></pre></td></tr></table></figure>
+
+<p>如果需要执行多条汇编语句的，则应该用“\n\t”将各个语句分隔开，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__asm__( &quot;pushl %%eax \\n\\t&quot;</span><br><span class="line">&quot;movl $0, %%eax \\n\\t&quot;</span><br><span class="line">&quot;popl %eax&quot;);</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__asm__( &quot;pushl %%eax \\n\\t&quot;</span><br><span class="line">&quot;movl $0, %%eax \\n\\t&quot;</span><br><span class="line">&quot;popl %eax&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>通常嵌入到C代码中的汇编代码很难做到与其他部分没有任何关系，因此更多时候需要用到完整的内联汇编格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__asm__(&quot;asm statements&quot; : outputs : inputs : registers-modified);</span><br></pre></td></tr></table></figure>
+
+<p>插入到C代码中的汇编代码是以”:”分割的四个布冯，其中一部分就是汇编代码身，通常被称为之后指令部，其格式和在汇编语言中使用的格式基本相同。指令部分是必须的，而其他部分这则可以根据实际情况进行省略。</p>
+<p>在将汇编语句嵌入到C代码中时，操作数如何与C代码中的变量相结合是一个很大的问题。</p>
+<p>GCC采用如下办法来解决这个问题：</p>
+<p>程序员提供具体的指令，而对寄存器的使用则只需给出”样板”和约束条件就可以了，具体怎样将寄存器和变量解饿起来就是GCC等编译器的事了</p>
+<p>在GCC内联汇编语句的指令中，加上前缀”%”的数字(如%0，%1)表示的就是需要时使用寄存器的”样板”操作数。指令部中使用了几个样板操作数，就表明有几个变量需要和寄存器相结合，这样GCC等编译器在编译时会根据后面给定的约束条件进行恰当的处理，由于样板操作数也是用”%”作为前缀，因此在设计到具体的寄存器时，寄存器前面应该加上两个”%”，一面产生混淆。</p>
+<p>紧跟在指令后部的是输出部，是规定输出变量如何与样板操作数进行结合的条件，每一个条件称为一个”约束”，必要时可以打包多个约束，相互之间用逗号分隔开就可以了。每个输出约束都是以”&#x3D;”号开始的，然后紧跟一个操作数类型进行说明的字后，最后是如何与变量相结合的约束。凡是与输出部中说明的操作数相结合的寄存器或操作数本身，在执行完嵌入的汇编代码后均不保留执行之前的内容，只是GCC在调度寄存器时所使用的依据。</p>
+<p>输出部后面时输入部，输入约束的格式和输出约束相似，但不带”&#x3D;”号，如果一个输入约束要求使用寄存器，则GCC在预处理时就会为之分配一个寄存器，并插入必要的指令将操作数装入该寄存器。与输入部中说明的操作数结婚的寄存器或操作数本身，在执行完嵌入的汇编代码后也不保留执行之前的内容。</p>
+<p>有时在执行某些操作时，除了要用到进行数据输入和输出的寄存器外，还要使用多个寄存器来保存中间计算结果，这样就难免会破坏原有寄存器的内容。在GCC内联汇编合适的最后一个部分中，可以对产生副作用的寄存器进行说明，一边GCC能采用相应的措施。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">int a = 10, b = 0;</span><br><span class="line">__asm__ __volatile__(&quot;movl %1, %%eax;\\n\\r&quot;</span><br><span class="line">&quot;movl %%eax, %0;&quot;</span><br><span class="line">:&quot;=r&quot;(b)</span><br><span class="line">:&quot;r&quot;(a)</span><br><span class="line">:&quot;%eax&quot;);</span><br><span class="line">printf(&quot;Result: %d, %d\\n&quot;, a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>上面的程序完成变量a的值赋予变量b，有几点需要说明：</p>
+<ul>
+<li>变量b是输出的操作数，通过%0来应用，而变量a是输入操作数，通过%1来引用。</li>
+<li>输入操作数和输出操作数都是用r进行约束，表示变量a和变量b储存在寄存器中。输入约束和输出约束的不同点在于输出约束多一个约束修饰符”&#x3D;”</li>
+<li>在内联汇编语句中使用寄存器eax时，寄存器名前应加两个”%”，即两个”%%eax”.内联汇编使用%0，%1等标示变量，任何只带一个”%”的表示符都看成是操作数，而不是寄存器。</li>
+<li>内联汇编的最后一个部分告诉GCC，他将改变寄存器eax的值，GCC编译器在处理时不应该使用该寄存器来储存其他任何值。</li>
+<li>由于变量b被指定成输出操作数，当内联汇编语句执行完毕后，她所保存的值将被更新。</li>
+</ul>
+<p>在内联汇编中用到的操作数，从输出部的第一个约束开始编号，序号从0开始，每一个约束计数一次，指令需要引用这些操作数，只需在序号前加上”%”作为前缀就可以了，需要注意的是，内敛汇编的指令部在引用第一个操作数时总将其作为32位的长字使用，但实际情况需要的是字或是字节，因此应该在约束中指明正确的限定符：</p>
+<table>
+<thead>
+<tr>
+<th><strong>限定符</strong></th>
+<th><strong>意义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“m”、”v”、”o”</td>
+<td>内存单元</td>
+</tr>
+<tr>
+<td>“r”</td>
+<td>任何寄存器</td>
+</tr>
+<tr>
+<td>“q”</td>
+<td>寄存器eax、ebx、ecx、edx之一</td>
+</tr>
+<tr>
+<td>“i”、”h”</td>
+<td>直接操作数</td>
+</tr>
+<tr>
+<td>“E”和”F”</td>
+<td>浮点数</td>
+</tr>
+<tr>
+<td>“g”</td>
+<td>任意</td>
+</tr>
+<tr>
+<td>“a”、”b”、”c”、”d”</td>
+<td>分别表示寄存器eax、ebx、ecx和edx</td>
+</tr>
+<tr>
+<td>“S”和”D”</td>
+<td>寄存器esi、edi</td>
+</tr>
+<tr>
+<td>“I”</td>
+<td>常数（0至31）</td>
+</tr>
+</tbody></table>
+<p>顺便提一下，内联汇编也可以将汇编单独写在一个源文件里，然后extern调用，个人感觉这样可能方便些。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;nasm -f elf test.asm   compile si as i386 default</span><br><span class="line">;nasm -f elf64 test.asm</span><br><span class="line">;ld -m elf_i386 -o test test.o  </span><br><span class="line">;ld  -m elf_x86_64 -o test test.o</span><br><span class="line">;这里单独编译也能运行,这里是intel的语法，at&amp;t也还是一样的。</span><br><span class="line">;ld -o test test.o </span><br><span class="line"></span><br><span class="line">section .data                  ;</span><br><span class="line">msg db &quot;hello, world&quot;,0xa      ; </span><br><span class="line">len equ $ - msg                ;</span><br><span class="line">section .text                  ;</span><br><span class="line"></span><br><span class="line">global hello_world              ;</span><br><span class="line">                               ;</span><br><span class="line">hello_world:                        ;</span><br><span class="line">    mov edx,len;write(1,str,len)</span><br><span class="line">    mov ecx,msg;</span><br><span class="line">    mov ebx,1;</span><br><span class="line">    mov eax,4;</span><br><span class="line">    int 0x80;</span><br><span class="line">    mov ebx,0;</span><br><span class="line">    mov eax,1;</span><br><span class="line">    int 0x80;</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// nasm -f elf64 hello_world.asm</span></span><br><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="comment">// gcc -c test.c -o test.o</span></span><br><span class="line"><span class="comment">// ld test.o srop.o -o test</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;linux/prctl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="title function_">hello_world</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    hello_world();   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1804189">https://cloud.tencent.com/developer/article/1804189</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/liaoshengshi/article/details/39989797">https://blog.csdn.net/liaoshengshi/article/details/39989797</a></p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        
+        
+    </div>
+    <a href="/2023/08/21/at&t%E6%B1%87%E7%BC%96/" class="go-post">阅读全文</a>
 </div>
 
 <div class="post">
@@ -1721,6 +1677,49 @@
         
     </div>
     <a href="/2023/03/22/kernel%E4%B8%8B%E8%BD%BD%E4%B8%8E%E7%BC%96%E8%AF%91/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2022/09/19/linux%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
+        <h2 class="post-title">linux网络编程</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/9/19
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>client</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PORT 28000</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_BUFFER_SIZE 1024</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> client_socket;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">server_addr</span>;</span></span><br><span class="line">    <span class="type">char</span> buffer[MAX_BUFFER_SIZE];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建客户端套接字</span></span><br><span class="line">    client_socket = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (client_socket == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Error creating socket&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置服务器地址结构</span></span><br><span class="line">    server_addr.sin_family = AF_INET;</span><br><span class="line">    server_addr.sin_addr.s_addr = inet_addr(<span class="string">&quot;150.158.21.50&quot;</span>);</span><br><span class="line">    server_addr.sin_port = htons(PORT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 尝试连接到服务器</span></span><br><span class="line">    <span class="keyword">if</span> (connect(client_socket, (<span class="keyword">struct</span> sockaddr*)&amp;server_addr, <span class="keyword">sizeof</span>(server_addr)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Error connecting to server&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Connected to server\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 发送和接收数据</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 输入消息</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Enter message: &quot;</span>);</span><br><span class="line">        fgets(buffer, <span class="keyword">sizeof</span>(buffer), <span class="built_in">stdin</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 发送数据</span></span><br><span class="line">        <span class="type">ssize_t</span> bytes_sent = send(client_socket, buffer, <span class="built_in">strlen</span>(buffer), <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (bytes_sent == <span class="number">-1</span>) &#123;</span><br><span class="line">            perror(<span class="string">&quot;Error sending data&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 接收数据</span></span><br><span class="line">        <span class="type">ssize_t</span> bytes_received = recv(client_socket, buffer, <span class="keyword">sizeof</span>(buffer), <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (bytes_received &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            perror(<span class="string">&quot;Error receiving data&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 在接收到的数据后添加字符串结束符</span></span><br><span class="line">        buffer[bytes_received] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Server response: %s&quot;</span>, buffer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 关闭套接字</span></span><br><span class="line">    close(client_socket);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>server</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PORT 28000</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE 1024</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> server_socket, client_socket;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">server_address</span>, <span class="title">client_address</span>;</span></span><br><span class="line">    <span class="type">char</span> buffer[BUFFER_SIZE] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 创建服务器套接字</span></span><br><span class="line">    <span class="keyword">if</span> ((server_socket = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Socket creation failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置服务器地址结构</span></span><br><span class="line">    server_address.sin_family = AF_INET;</span><br><span class="line">    server_address.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line">    server_address.sin_port = htons(PORT);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将服务器套接字绑定到指定地址和端口</span></span><br><span class="line">    <span class="keyword">if</span> (bind(server_socket, (<span class="keyword">struct</span> sockaddr *)&amp;server_address, <span class="keyword">sizeof</span>(server_address)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Bind failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 监听连接请求</span></span><br><span class="line">    <span class="keyword">if</span> (listen(server_socket, <span class="number">3</span>) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Listen failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Server listening on port %d...\n&quot;</span>, PORT);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 接受连接</span></span><br><span class="line">    <span class="keyword">if</span> ((client_socket = accept(server_socket, (<span class="keyword">struct</span> sockaddr *)&amp;client_address, (<span class="type">socklen_t</span>*)&amp;client_address)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Accept failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 从客户端接收消息并发送回复</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(buffer, <span class="number">0</span>, <span class="keyword">sizeof</span>(buffer));</span><br><span class="line">        <span class="keyword">if</span> (read(client_socket, buffer, <span class="keyword">sizeof</span>(buffer)) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Client disconnected\n&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Received message from client: %s&quot;</span>, buffer);</span><br><span class="line">        write(client_socket, buffer, <span class="built_in">strlen</span>(buffer));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 关闭套接字</span></span><br><span class="line">    close(server_socket);</span><br><span class="line">    close(client_socket);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>将server部署到云服务器时，需在防火墙和策略组开放相应端口，端口的选择也应当注意，不要冲突。</p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        
+        
+    </div>
+    <a href="/2022/09/19/linux%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="go-post">阅读全文</a>
 </div>
 
 
