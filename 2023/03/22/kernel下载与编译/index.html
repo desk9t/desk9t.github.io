@@ -3,7 +3,7 @@
 <html lang="en | zh-CN |zh-TW">
 <head>
     <meta charset="utf-8" />
-    <title>Archives | Q^Q</title>
+    <title>kernel下载和编译 | Q^Q</title>
     <meta name="author" content="desk9t" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -31,6 +31,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -144,152 +148,71 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-            
-<div id="archives">
-    
-    <div id="timeline-wrap" ref="timeline">
+            <div class="article">
+    <div>
+        <h1>kernel下载和编译</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/3/22
+        </span>
         
-        <div class="timeline" data-title="kernel下载和编译">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2023/3/22</div>
-                <a href="/2023/03/22/kernel%E4%B8%8B%E8%BD%BD%E4%B8%8E%E7%BC%96%E8%AF%91/">
-                    <h3>kernel下载和编译</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="kernel">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2023/3/25</div>
-                <a href="/2023/03/25/kernel/">
-                    <h3>kernel</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="c/c++多线程">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2023/5/13</div>
-                <a href="/2023/05/13/CC++%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-                    <h3>C/C++多线程</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="arm">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2023/6/19</div>
-                <a href="/2023/06/19/arm/">
-                    <h3>arm</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="os">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2024/1/15</div>
-                <a href="/2024/01/15/OS/">
-                    <h3>OS</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="qemu环境">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2024/2/22</div>
-                <a href="/2024/02/22/qemu%E7%8E%AF%E5%A2%83/">
-                    <h3>qemu环境</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="qemu调试">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2024/2/24</div>
-                <a href="/2024/02/24/qemu%E8%B0%83%E8%AF%95/">
-                    <h3>qemu调试</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2024/3/22</div>
-                <a href="/2024/03/22/C%E4%BF%A1%E5%8F%B7/">
-                    <h3></h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2024/3/22</div>
-                <a href="/2024/03/22/linux%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
-                    <h3></h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="test">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2024/8/21</div>
-                <a href="/2024/08/21/at&t%E6%B1%87%E7%BC%96/">
-                    <h3>test</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                </div>
-            </div>
-        </div>
         
     </div>
+    
+    <div class="content" v-pre>
+        <p>内核源码编译</p>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p><a target="_blank" rel="noopener" href="https://www.kernel.org/">源码下载</a></p>
+<img src="./../pictures/kernel/image-20240102144055344.png" alt="image-20240102144055344" style="zoom:50%;" />
+
+<p>选择长期支持版</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-**.tar.xz</span><br><span class="line">unxz linux-**.tar.xz</span><br><span class="line">tar -xf linux-**.tar</span><br></pre></td></tr></table></figure>
+
+<p>注意：在ubuntu下编译可能会要求证书或签名。</p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/67670169/compiling-kernel-gives-error-no-rule-to-make-target-debian-certs-debian-uefi-ce">如果要求证书</a></p>
+<h3 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h3><p>先配置选项</p>
+<p>依赖包</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install bc binutils bison dwarves flex gcc git gnupg2 gzip libelf-dev libncurses5-dev libssl-dev make openssl pahole perl-base rsync tar xz-utils</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>
+
+<p>这里我们主要关注调试方面的选项，依次进入到 Kernel hacking -&gt; Compile-time checks and compiler options，然后勾选如下选项<code>Compile the kernel with debug info</code>，以便于调试（不过似乎现在是默认开启的）。<br>如果要使用 kgdb 调试内核，则需要选中 <code>KGDB: kernel debugger</code>，并选中 KGDB 下的<u>所有</u>选项。</p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>编译内核镜像，可以根据机器的核数来选择具体使用多少核来编译内核</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j3 bzImage</span><br></pre></td></tr></table></figure>
+
+<p>注意，这条命令只编译内核的镜像，如果要测试并编译自己的驱动程序是不够的。</p>
+<p>需执行以下命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j3 all</span><br></pre></td></tr></table></figure>
+
+<p>期间如果有没有缺少依赖包的报错，自行安装就是。</p>
+<p>最后编译成功后。</p>
+<ul>
+<li>bzImage：<code>arch/x86/boot/bzImage</code></li>
+<li>vmlinux：源码所在的根目录下。</li>
+</ul>
+<p>此外，这里给出常见内核文件的介绍。</p>
+<ul>
+<li><strong>bzImage</strong>：目前主流的 kernel 镜像格式，即 big zImage（即 bz 不是指 bzip2），适用于较大的（大于 512 KB） Kernel。这个镜像会被加载到内存的高地址，高于 1MB。bzImage 是用 gzip 压缩的，文件的开头部分有 gzip 解压缩的代码，所以我们不能用 gunzip 来解压缩。</li>
+<li><strong>zImage</strong>：比较老的 kernel 镜像格式，适用于较小的（不大于 512KB） Kernel。启动时，这个镜像会被加载到内存的低地址，即内存的前 640 KB。zImage 也不能用 gunzip 来解压缩。</li>
+<li><strong>vmlinuz</strong>：vmlinuz 不仅包含了压缩后的 vmlinux，还包含了 gzip 解压缩的代码。实际上就是 zImage 或者 bzImage 文件。该文件是 bootable 的。 bootable 是指它能够把内核加载到内存中。对于 Linux 系统而言，该文件位于 &#x2F;boot 目录下。该目录包含了启动系统时所需要的文件。</li>
+<li><strong>vmlinux</strong>：静态链接的 Linux kernel，以可执行文件的形式存在，尚未经过压缩。该文件往往是在生成 vmlinuz 的过程中产生的。该文件适合于调试。但是该文件不是 bootable 的。</li>
+<li><strong>vmlinux.bin</strong>：也是静态链接的 Linux kernel，只是以一个可启动的 (bootable) 二进制文件存在。所有的符号信息和重定位信息都被删除了。生成命令为：<code>objcopy -O binary vmlinux vmlinux.bin</code>。</li>
+<li><strong>uImage</strong>：uImage 是 U-boot 专用的镜像文件，它是在 zImage 之前加上了一个长度为 0x40 的 tag 而构成的。这个 tag 说明了这个镜像文件的类型、加载位置、生成时间、大小等信息。</li>
+</ul>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
 </div>
 
             <footer id="footer">
@@ -320,6 +243,12 @@
         
     </div>
     <script src="/js/main.js"></script>
+    
+    
+
+
+
+
     
 </body>
 </html>

